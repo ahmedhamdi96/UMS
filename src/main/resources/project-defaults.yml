@@ -1,0 +1,14 @@
+swarm:
+  deployment:
+    java-ee-base.war:
+  datasources:
+    jdbc-drivers:
+      com.mysql:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        driver-module-name: com.mysql
+    data-sources:
+      umsdb:
+        driver-name: com.mysql
+        connection-url: jdbc:mysql://localhost:3306/UMSDB
+        user-name: root
+        password: root
