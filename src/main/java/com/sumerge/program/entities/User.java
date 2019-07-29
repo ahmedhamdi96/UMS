@@ -6,6 +6,16 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "USERS", schema = "UMSDB")
+@NamedQueries({
+        @NamedQuery(name = "User.selectByEmail",
+                    query = "SELECT u FROM User u WHERE u.email = :email and u.active = true"),
+        @NamedQuery(name = "User.selectAllUsers",
+                    query = "SELECT u.firstName, u.lastName, u.email FROM User u WHERE u.active = true"),
+        @NamedQuery(name = "User.selectAllUsersAdmin",
+                    query = "SELECT u.userId, u.firstName, u.lastName, u.email, u.admin, u.active FROM User u"),
+        @NamedQuery(name = "User.deleteUser",
+                    query = "UPDATE User SET active = false WHERE userId = :userId")
+})
 public class User implements Serializable {
     @Id
     @Column(name = "USER_ID")
