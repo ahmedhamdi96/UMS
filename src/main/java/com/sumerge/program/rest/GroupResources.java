@@ -37,7 +37,7 @@ public class GroupResources {
             }
 
             return Response.ok().
-                    entity(groupManager.createGroup(group)).
+                    entity(groupManager.createGroup(group, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();

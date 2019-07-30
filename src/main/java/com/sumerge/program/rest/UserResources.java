@@ -24,7 +24,7 @@ public class UserResources {
 
     @GET
     @Path("admin/{id}")
-    public Response getAllUsersAdmin(@PathParam("id") Integer userId) {
+    public Response getUserAdmin(@PathParam("id") Integer userId) {
         try {
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
@@ -84,12 +84,12 @@ public class UserResources {
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
-            if(authenticated_user.getUserId()!=id){
+            if(authenticated_user.getUserId().intValue() !=  id.intValue()){
                 throw new WebApplicationException("You are authorized to edit your information only!", Response.Status.FORBIDDEN);
             }
 
             return Response.ok().
-                    entity(userManager.updateUser(id, user)).
+                    entity(userManager.updateUser(id, user, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
@@ -111,7 +111,7 @@ public class UserResources {
             }
 
             return Response.ok().
-                    entity(userManager.createUser(user)).
+                    entity(userManager.createUser(user, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
@@ -134,7 +134,7 @@ public class UserResources {
             }
 
             return Response.ok().
-                    entity(userManager.deleteUser(id)).
+                    entity(userManager.deleteUser(id, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
@@ -157,7 +157,7 @@ public class UserResources {
             }
 
             return Response.ok().
-                    entity(userManager.updateUserGroups(userId, groupId)).
+                    entity(userManager.updateUserGroups(userId, groupId, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
@@ -180,7 +180,7 @@ public class UserResources {
             }
 
             return Response.ok().
-                    entity(userManager.deleteUserGroups(userId, groupId)).
+                    entity(userManager.deleteUserGroups(userId, groupId, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
