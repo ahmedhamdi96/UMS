@@ -22,6 +22,8 @@ swarm:
               flag: required
               module-options:
                 dsJndiName: java:jboss/datasources/umsdb
+                hashAlgorithm: SHA-256
+                hashEncoding: HEX
                 principalsQuery: SELECT PASSWORD FROM USERS WHERE EMAIL=?
                 rolesQuery: SELECT ADMIN, 'admin' FROM USERS WHERE EMAIL=?
   datasources:
