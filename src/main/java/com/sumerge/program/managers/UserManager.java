@@ -1,5 +1,6 @@
 package com.sumerge.program.managers;
 
+import com.sumerge.program.entities.Group;
 import com.sumerge.program.entities.User;
 
 import javax.ejb.Stateless;
@@ -15,6 +16,12 @@ public class UserManager {
 
     @PersistenceContext(unitName = "umsdb-pu")
     private EntityManager entityManager;
+
+    public User readUser(Integer userId){
+        User userDB = entityManager.find( User.class, userId);
+        userDB.setPassword(null);
+        return userDB;
+    }
 
     public List<User> readAllUsers(){
         TypedQuery<User> query =
@@ -63,5 +70,19 @@ public class UserManager {
         } else {
             throw new WebApplicationException("userId does not exist!", Response.Status.BAD_REQUEST);
         }
+    }
+
+    public User updateUserGroups(Integer userId, Integer groupId){
+        User userDB = entityManager.find( User.class, userId);
+        Group groupDB = entityManager.find( Group.class, groupId);
+        userDB.getGroups().add(groupDB);
+        return entityManager.merge(userDB);
+    }
+
+    public User deleteUserGroups(Integer userId, Integer groupId){
+        User userDB = entityManager.find( User.class, userId);
+        Group groupDB = entityManager.find( Group.class, groupId);
+        userDB.getGroups().remove(groupDB);
+        return entityManager.merge(userDB);
     }
 }
