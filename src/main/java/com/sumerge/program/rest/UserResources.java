@@ -23,6 +23,27 @@ public class UserResources {
     private HttpServletRequest httpRequest;
 
     @GET
+    @Path("admin/{id}")
+    public Response getAllUsersAdmin(@PathParam("id") Integer userId) {
+        try {
+            String email = httpRequest.getRemoteUser();
+            User authenticated_user = userManager.readUserByEmail(email);
+
+            if(!authenticated_user.getAdmin()){
+                throw new WebApplicationException("You do not have an Admin Authorization!", Response.Status.FORBIDDEN);
+            }
+
+            return Response.ok().
+                    entity(userManager.readUser(userId)).
+                    build();
+        } catch (Exception e) {
+            return Response.serverError().
+                    entity(e.getClass() + ": " + e.getMessage()).
+                    build();
+        }
+    }
+
+    @GET
     public Response getAllUsers() {
         try {
             return Response.ok().
@@ -58,7 +79,7 @@ public class UserResources {
 
     @PUT
     @Path("{id}")
-    public Response putInfo(@PathParam("id") int id, User user){
+    public Response putInfo(@PathParam("id") Integer id, User user){
         try{
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
@@ -103,7 +124,7 @@ public class UserResources {
 
     @DELETE
     @Path("{id}")
-    public Response deleteUser(@PathParam("id") int id){
+    public Response deleteUser(@PathParam("id") Integer id){
         try{
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
@@ -114,6 +135,52 @@ public class UserResources {
 
             return Response.ok().
                     entity(userManager.deleteUser(id)).
+                    build();
+        } catch (WebApplicationException e) {
+            return e.getResponse();
+        } catch (Exception e) {
+            return Response.serverError().
+                    entity(e.getClass() + ": " + e.getMessage()).
+                    build();
+        }
+    }
+
+    @PUT
+    @Path("{userId}/{groupId}")
+    public Response putUserGroups(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId){
+        try{
+            String email = httpRequest.getRemoteUser();
+            User authenticated_user = userManager.readUserByEmail(email);
+
+            if(!authenticated_user.getAdmin()){
+                throw new WebApplicationException("You do not have an Admin Authorization!", Response.Status.FORBIDDEN);
+            }
+
+            return Response.ok().
+                    entity(userManager.updateUserGroups(userId, groupId)).
+                    build();
+        } catch (WebApplicationException e) {
+            return e.getResponse();
+        } catch (Exception e) {
+            return Response.serverError().
+                    entity(e.getClass() + ": " + e.getMessage()).
+                    build();
+        }
+    }
+
+    @DELETE
+    @Path("{userId}/{groupId}")
+    public Response deleteUserGroups(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId){
+        try{
+            String email = httpRequest.getRemoteUser();
+            User authenticated_user = userManager.readUserByEmail(email);
+
+            if(!authenticated_user.getAdmin()){
+                throw new WebApplicationException("You do not have an Admin Authorization!", Response.Status.FORBIDDEN);
+            }
+
+            return Response.ok().
+                    entity(userManager.deleteUserGroups(userId, groupId)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();
