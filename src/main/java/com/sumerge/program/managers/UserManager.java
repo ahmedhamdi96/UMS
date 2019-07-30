@@ -11,7 +11,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import static com.sumerge.program.utils.Hashing.sha256;
 
 @Stateless
 public class UserManager {
@@ -61,7 +65,8 @@ public class UserManager {
         return merged_user;
     }
 
-    public User createUser(User user, String author){
+    public User createUser(User user, String author) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        user.setPassword(sha256(user.getPassword()));
         User merged_user =  entityManager.merge(user);
         auditManager.createAudit(author, "CREATE", new Gson().toJson(merged_user));
         return merged_user;
