@@ -14,7 +14,11 @@ import java.util.Collection;
         @NamedQuery(name = "User.selectAllUsersAdmin",
                     query = "SELECT u.userId, u.firstName, u.lastName, u.email, u.admin, u.active FROM User u"),
         @NamedQuery(name = "User.deleteUser",
-                    query = "UPDATE User SET active = false WHERE userId = :userId")
+                    query = "UPDATE User SET active = false WHERE userId = :userId"),
+        @NamedQuery(name = "User.selectUser",
+                query = "SELECT u FROM User u WHERE u.userId = :userId"),
+        @NamedQuery(name = "User.updateUserPassword",
+                query = "UPDATE User SET password = :newPassword WHERE userId = :userId")
 })
 public class User implements Serializable {
     @Id

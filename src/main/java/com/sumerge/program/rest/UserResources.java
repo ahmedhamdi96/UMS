@@ -2,6 +2,7 @@ package com.sumerge.program.rest;
 
 import com.sumerge.program.entities.User;
 import com.sumerge.program.managers.UserManager;
+import com.sumerge.program.models.PasswordModel;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
@@ -99,7 +100,7 @@ public class UserResources {
             User authenticated_user = userManager.readUserByEmail(email);
 
             if(authenticated_user.getUserId().intValue() !=  id.intValue()){
-                throw new WebApplicationException("You are authorized to edit your information only!", Response.Status.FORBIDDEN);
+                throw new WebApplicationException("You are authorized to edit your own information only!", Response.Status.FORBIDDEN);
             }
 
             return Response.ok().
@@ -207,6 +208,32 @@ public class UserResources {
 
             return Response.ok().
                     entity(userManager.deleteUserGroups(userId, groupId, email)).
+                    build();
+        } catch (WebApplicationException e) {
+            return e.getResponse();
+        } catch (Exception e) {
+            return Response.serverError().
+                    entity(e.getClass() + ": " + e.getMessage()).
+                    build();
+        }
+    }
+
+    @PUT
+    @Path("{id}/password/reset")
+    public Response resetPassword(@PathParam("id") Integer id, PasswordModel passwordModel){
+        try{
+            if(logger.isDebugEnabled()){
+                logger.debug("PUT/ resetPassword");
+            }
+            String email = httpRequest.getRemoteUser();
+            User authenticated_user = userManager.readUserByEmail(email);
+
+            if(authenticated_user.getUserId().intValue() !=  id.intValue()){
+                throw new WebApplicationException("You are authorized to reset your own password only!", Response.Status.FORBIDDEN);
+            }
+
+            return Response.ok().
+                    entity(userManager.resetUserPassword(id, passwordModel, email)).
                     build();
         } catch (WebApplicationException e) {
             return e.getResponse();

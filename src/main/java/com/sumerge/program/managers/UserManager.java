@@ -3,6 +3,7 @@ package com.sumerge.program.managers;
 import com.google.gson.Gson;
 import com.sumerge.program.entities.Group;
 import com.sumerge.program.entities.User;
+import com.sumerge.program.models.PasswordModel;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
@@ -131,5 +132,35 @@ public class UserManager {
         User merged_user =  entityManager.merge(userDB);
         //auditManager.createAudit(author, "UPDATE", new Gson().toJson(merged_user));
         return merged_user;
+    }
+
+    public String resetUserPassword(Integer userId, PasswordModel passwordModel, String author) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(logger.isDebugEnabled()){
+            logger.debug("resetUserPassword");
+        }
+
+        passwordModel.setOldPassword(sha256(passwordModel.getOldPassword()));
+        passwordModel.setNewPassword(sha256(passwordModel.getNewPassword()));
+
+        TypedQuery<User> selectUserQuery =
+                entityManager.createNamedQuery("User.selectUser", User.class).setParameter("userId", userId);
+        String passwordDB = selectUserQuery.getSingleResult().getPassword();
+
+        if (passwordDB.equals(passwordModel.getOldPassword())){
+            TypedQuery<User> updateUserPasswordQuery =
+                    entityManager.createNamedQuery("User.updateUserPassword", User.class).
+                            setParameter("userId", userId).
+                            setParameter("newPassword", passwordModel.getNewPassword());
+            int updated =  updateUserPasswordQuery.executeUpdate();
+            if (updated == 1){
+                User userDB = entityManager.find( User.class, userId);
+                auditManager.createAudit(author, "UPDATE", new Gson().toJson(userDB));
+                return "User Password Updated Successfully.";
+            } else {
+                throw new WebApplicationException("Error Updating User Password", Response.Status.BAD_REQUEST);
+            }
+        } else {
+            throw new WebApplicationException("Old Password is not correct!", Response.Status.BAD_REQUEST);
+        }
     }
 }
