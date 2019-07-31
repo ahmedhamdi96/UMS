@@ -2,6 +2,7 @@ package com.sumerge.program.managers;
 
 import com.google.gson.Gson;
 import com.sumerge.program.entities.Group;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,9 +15,12 @@ public class GroupManager {
     private EntityManager entityManager;
     @EJB
     private AuditManager auditManager;
-
+    private final static Logger logger = Logger.getLogger(GroupManager.class);
 
     public Group createGroup(Group group, String author){
+        if(logger.isDebugEnabled()){
+            logger.debug("createGroup");
+        }
         Group merged_group =  entityManager.merge(group);
         auditManager.createAudit(author, "CREATE", new Gson().toJson(merged_group));
         return merged_group;

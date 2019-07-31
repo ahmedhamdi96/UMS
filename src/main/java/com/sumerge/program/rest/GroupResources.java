@@ -4,6 +4,7 @@ import com.sumerge.program.entities.Group;
 import com.sumerge.program.entities.User;
 import com.sumerge.program.managers.GroupManager;
 import com.sumerge.program.managers.UserManager;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -25,10 +26,14 @@ public class GroupResources {
     private GroupManager groupManager;
     @Context
     private HttpServletRequest httpRequest;
+    private final static Logger logger = Logger.getLogger(GroupResources.class);
 
     @POST
     public Response postGroup(Group group){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("POST/ postGroup");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
