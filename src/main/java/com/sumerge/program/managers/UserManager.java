@@ -3,6 +3,7 @@ package com.sumerge.program.managers;
 import com.google.gson.Gson;
 import com.sumerge.program.entities.Group;
 import com.sumerge.program.entities.User;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -23,13 +24,21 @@ public class UserManager {
     private EntityManager entityManager;
     @EJB
     private AuditManager auditManager;
+    private final static Logger logger = Logger.getLogger(UserManager.class);
+
 
     public User readUser(Integer userId){
+        if(logger.isDebugEnabled()){
+            logger.debug("readUser");
+        }
         User userDB = entityManager.find( User.class, userId);
         return userDB;
     }
 
     public List<User> readAllUsers(){
+        if(logger.isDebugEnabled()){
+            logger.debug("readAllUsers");
+        }
         TypedQuery<User> query =
                 entityManager.createNamedQuery("User.selectAllUsers", User.class);
         List<User> users = query.getResultList();
@@ -37,6 +46,9 @@ public class UserManager {
     }
 
     public List<User> readAllUsersAdmin(){
+        if(logger.isDebugEnabled()){
+            logger.debug("readAllUsersAdmin");
+        }
         TypedQuery<User> query =
                 entityManager.createNamedQuery("User.selectAllUsersAdmin", User.class);
         List<User> users = query.getResultList();
@@ -44,6 +56,9 @@ public class UserManager {
     }
 
     public User readUserByEmail(String email){
+        if(logger.isDebugEnabled()){
+            logger.debug("readUserByEmail");
+        }
         TypedQuery<User> query =
                 entityManager.createNamedQuery("User.selectByEmail", User.class).setParameter("email", email);
         User user = query.getSingleResult();
@@ -51,6 +66,9 @@ public class UserManager {
     }
 
     public User updateUser(Integer userId, User userUpdated, String author){
+        if(logger.isDebugEnabled()){
+            logger.debug("updateUser");
+        }
         User userDB = entityManager.find( User.class, userId);
 
         if (userUpdated.getFirstName()!= null){
@@ -66,6 +84,9 @@ public class UserManager {
     }
 
     public User createUser(User user, String author) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(logger.isDebugEnabled()){
+            logger.debug("createUser");
+        }
         user.setPassword(sha256(user.getPassword()));
         User merged_user =  entityManager.merge(user);
         auditManager.createAudit(author, "CREATE", new Gson().toJson(merged_user));
@@ -73,6 +94,9 @@ public class UserManager {
     }
 
     public String deleteUser(Integer userId, String author){
+        if(logger.isDebugEnabled()){
+            logger.debug("deleteUser");
+        }
         TypedQuery<User> query =
                 entityManager.createNamedQuery("User.deleteUser", User.class).setParameter("userId", userId);
         int updated =  query.executeUpdate();
@@ -86,6 +110,9 @@ public class UserManager {
     }
 
     public User updateUserGroups(Integer userId, Integer groupId, String author){
+        if(logger.isDebugEnabled()){
+            logger.debug("updateUserGroups");
+        }
         User userDB = entityManager.find( User.class, userId);
         Group groupDB = entityManager.find( Group.class, groupId);
         userDB.getGroups().add(groupDB);
@@ -95,6 +122,9 @@ public class UserManager {
     }
 
     public User deleteUserGroups(Integer userId, Integer groupId, String author){
+        if(logger.isDebugEnabled()){
+            logger.debug("deleteUserGroups");
+        }
         User userDB = entityManager.find( User.class, userId);
         Group groupDB = entityManager.find( Group.class, groupId);
         userDB.getGroups().remove(groupDB);

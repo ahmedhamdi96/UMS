@@ -1,6 +1,7 @@
 package com.sumerge.program.managers;
 
 import com.sumerge.program.entities.Audit;
+import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,11 +11,14 @@ import java.util.Date;
 
 @Stateless
 public class AuditManager {
-
     @PersistenceContext(unitName = "umsdb-pu")
     private EntityManager entityManager;
+    private final static Logger logger = Logger.getLogger(AuditManager.class);
 
     public void createAudit(String author, String action, String entity){
+        if(logger.isDebugEnabled()){
+            logger.debug("createAudit");
+        }
         Audit audit = new Audit(author, action, new Timestamp(new Date().getTime()), entity);
         entityManager.persist(audit);
     }

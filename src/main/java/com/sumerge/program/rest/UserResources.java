@@ -2,6 +2,7 @@ package com.sumerge.program.rest;
 
 import com.sumerge.program.entities.User;
 import com.sumerge.program.managers.UserManager;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -21,11 +22,15 @@ public class UserResources {
     private UserManager userManager;
     @Context
     private HttpServletRequest httpRequest;
+    private final static Logger logger = Logger.getLogger(UserResources.class);
 
     @GET
     @Path("admin/{id}")
     public Response getUserAdmin(@PathParam("id") Integer userId) {
         try {
+            if(logger.isDebugEnabled()){
+                logger.debug("GET/ getUserAdmin");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -46,6 +51,9 @@ public class UserResources {
     @GET
     public Response getAllUsers() {
         try {
+            if(logger.isDebugEnabled()){
+                logger.debug("GET/ getAllUsers");
+            }
             return Response.ok().
                     entity(userManager.readAllUsers()).
                     build();
@@ -60,6 +68,9 @@ public class UserResources {
     @Path("admin")
     public Response getAllUsersAdmin() {
         try {
+            if(logger.isDebugEnabled()){
+                logger.debug("GET/ getAllUsersAdmin");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -81,6 +92,9 @@ public class UserResources {
     @Path("{id}")
     public Response putInfo(@PathParam("id") Integer id, User user){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("PUT/ putInfo");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -103,6 +117,9 @@ public class UserResources {
     @POST
     public Response postUser(User user){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("POST/ postUser");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -126,6 +143,9 @@ public class UserResources {
     @Path("{id}")
     public Response deleteUser(@PathParam("id") Integer id){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("DELETE/ deleteUser");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -149,6 +169,9 @@ public class UserResources {
     @Path("{userId}/{groupId}")
     public Response putUserGroups(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("PUT/ putUserGroups");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
@@ -172,6 +195,9 @@ public class UserResources {
     @Path("{userId}/{groupId}")
     public Response deleteUserGroups(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId){
         try{
+            if(logger.isDebugEnabled()){
+                logger.debug("DELETE/ deleteUserGroups");
+            }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
 
