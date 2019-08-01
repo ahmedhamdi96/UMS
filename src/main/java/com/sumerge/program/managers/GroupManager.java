@@ -15,11 +15,11 @@ public class GroupManager {
     private EntityManager entityManager;
     @EJB
     private AuditManager auditManager;
-    private final static Logger logger = Logger.getLogger(GroupManager.class);
+    private final static Logger LOGGER = Logger.getLogger(GroupManager.class);
 
     public Group createGroup(Group group, String author){
-        if(logger.isDebugEnabled()){
-            logger.debug("createGroup");
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("createGroup");
         }
         Group merged_group =  entityManager.merge(group);
         auditManager.createAudit(author, "CREATE", new Gson().toJson(merged_group));

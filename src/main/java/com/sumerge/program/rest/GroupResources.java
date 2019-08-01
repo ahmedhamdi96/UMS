@@ -1,5 +1,6 @@
 package com.sumerge.program.rest;
 
+
 import com.sumerge.program.entities.Group;
 import com.sumerge.program.entities.User;
 import com.sumerge.program.managers.GroupManager;
@@ -26,13 +27,13 @@ public class GroupResources {
     private GroupManager groupManager;
     @Context
     private HttpServletRequest httpRequest;
-    private final static Logger logger = Logger.getLogger(GroupResources.class);
+    private final static Logger LOGGER = Logger.getLogger(GroupResources.class);
 
     @POST
     public Response postGroup(Group group){
         try{
-            if(logger.isDebugEnabled()){
-                logger.debug("POST/ postGroup");
+            if(LOGGER.isDebugEnabled()){
+                LOGGER.debug("POST/ postGroup");
             }
             String email = httpRequest.getRemoteUser();
             User authenticated_user = userManager.readUserByEmail(email);
