@@ -105,13 +105,6 @@ public class UserManager {
             return null;
         }
 
-        if (userUpdated.getFirstName()!= null){
-            userDB.setFirstName(userUpdated.getFirstName());
-        }
-        if (userUpdated.getLastName()!= null){
-            userDB.setLastName(userUpdated.getLastName());
-        }
-
         if (userUpdated.getEmail()!= null){
             if (readUserByEmail(userUpdated.getEmail())==null){
                 userDB.setEmail(userUpdated.getEmail());
@@ -119,6 +112,13 @@ public class UserManager {
                 LOGGER.debug("updateUser: EXIT");
                 return null;
             }
+        }
+
+        if (userUpdated.getFirstName()!= null){
+            userDB.setFirstName(userUpdated.getFirstName());
+        }
+        if (userUpdated.getLastName()!= null){
+            userDB.setLastName(userUpdated.getLastName());
         }
 
         User merged_user = entityManager.merge(userDB);
