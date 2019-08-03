@@ -9,16 +9,18 @@ import java.util.Collection;
 @NamedQueries({
         @NamedQuery(name = "User.selectByEmail",
                     query = "SELECT u FROM User u WHERE u.email = :email and u.active = true"),
-        @NamedQuery(name = "User.selectAllUsers",
-                    query = "SELECT u.firstName, u.lastName, u.email FROM User u WHERE u.active = true"),
-        @NamedQuery(name = "User.selectAllUsersAdmin",
-                    query = "SELECT u.userId, u.firstName, u.lastName, u.email, u.admin, u.active FROM User u"),
-        @NamedQuery(name = "User.deleteUser",
-                    query = "UPDATE User u SET u.active = false, u.email = concat(u.email, '_DELETED') WHERE u.userId = :userId"),
         @NamedQuery(name = "User.selectUser",
-                query = "SELECT u FROM User u WHERE u.userId = :userId"),
+                query = "SELECT u FROM User u WHERE u.userId = :userId  and u.active = true"),
+        @NamedQuery(name = "User.selectAllUsers",
+                    query = "SELECT u FROM User u WHERE u.active = true"),
+        @NamedQuery(name = "User.selectAllUsersAdmin",
+                    query = "SELECT u FROM User u"),
+        @NamedQuery(name = "User.deleteUser",
+                    query = "UPDATE User u SET u.active = false, u.email = concat(u.email, '_DELETED') WHERE u.userId = :userId and u.active = true and u.admin = false"),
+        @NamedQuery(name = "User.deleteUserMasterAdmin",
+                query = "UPDATE User u SET u.active = false, u.email = concat(u.email, '_DELETED') WHERE u.userId = :userId and u.active = true"),
         @NamedQuery(name = "User.updateUserPassword",
-                query = "UPDATE User SET password = :newPassword WHERE userId = :userId")
+                query = "UPDATE User u SET u.password = :newPassword WHERE u.userId = :userId  and u.active = true")
 })
 public class User implements Serializable {
     @Id
@@ -104,5 +106,19 @@ public class User implements Serializable {
 
     public void setGroups(Collection<Group> groups) {
         this.groups = groups;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", admin=" + admin +
+                ", active=" + active +
+                ", groups=" + groups +
+                '}';
     }
 }

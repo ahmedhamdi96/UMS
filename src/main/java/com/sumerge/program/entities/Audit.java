@@ -1,5 +1,6 @@
 package com.sumerge.program.entities;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,16 +20,19 @@ public class Audit implements Serializable {
     private String action;
     @Column(name = "TIMESTAMP")
     private Timestamp timestamp;
+    @Column(name = "ENTITY_TYPE")
+    private String entityType;
     @Column(name = "ENTITY")
     private String entity;
 
     public Audit() {
     }
 
-    public Audit(String author, String action, Timestamp timestamp, String entity) {
+    public Audit(String author, String action, Timestamp timestamp, String entityType, String entity) {
         this.author = author;
         this.action = action;
         this.timestamp = timestamp;
+        this.entityType = entityType;
         this.entity = entity;
     }
 
@@ -62,6 +66,14 @@ public class Audit implements Serializable {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public String getEntity() {

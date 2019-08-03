@@ -8,6 +8,13 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "GROUPS", schema = "UMSDB")
+@NamedQueries({
+        @NamedQuery(name = "Group.selectByName",
+                query = "SELECT g FROM Group g WHERE g.name = :name and g.active = true"),
+        @NamedQuery(name = "Group.selectAllGroups",
+                query = "SELECT g FROM Group g WHERE g.active = true"),
+        @NamedQuery(name = "Group.selectAllGroupsAdmin",
+                query = "SELECT g FROM Group g")})
 public class Group implements Serializable {
     @Id
     @Column(name = "GROUP_ID")
@@ -63,5 +70,16 @@ public class Group implements Serializable {
 
     public void setUsers(Collection<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "groupId=" + groupId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", active=" + active +
+                ", users=" + users +
+                '}';
     }
 }
