@@ -103,6 +103,7 @@ public class GroupManager {
         }
         group.setUsers(null);
         group.setActive(false);
+        group.setName(group.getName()+"_DELETED");
         Group merged_group =  entityManager.merge(group);
         auditManager.createAudit(author, "DELETE", "GROUP", new Gson().toJson(new GroupAdminModel(merged_group)));
 

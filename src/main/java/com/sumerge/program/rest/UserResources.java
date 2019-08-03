@@ -139,10 +139,8 @@ public class UserResources {
             allFieldsNotNull &= (user.getEmail() != null);
             allFieldsNotNull &= (user.getPassword() != null);
             allFieldsNotNull &= (user.getAdmin() != null);
-            allFieldsNotNull &= (user.getActive()!= null);
 
             Boolean allFieldsValid = false;
-
             if (allFieldsNotNull){
                 allFieldsValid = true;
                 allFieldsValid &= Regex.isValidEmail(user.getEmail());
@@ -162,6 +160,8 @@ public class UserResources {
             }
 
             user.setUserId(null);
+            user.setActive(true);
+            user.setGroups(null);
             User userCreated = userManager.createUser(user, email);
             if(userCreated == null){
                 String message =  "Email already used!";

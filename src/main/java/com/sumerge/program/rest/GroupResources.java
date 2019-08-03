@@ -139,7 +139,6 @@ public class GroupResources {
             Boolean allFieldsNotNull = true;
             allFieldsNotNull &= (group.getName() != null);
             allFieldsNotNull &= (group.getDescription()!= null);
-            allFieldsNotNull &= (group.getActive()!= null);
 
             Boolean allFieldsValid = false;
 
@@ -159,6 +158,8 @@ public class GroupResources {
             }
 
             group.setGroupId(null);
+            group.setActive(true);
+            group.setUsers(null);
             Group groupCreated = groupManager.createGroup(group, email);
             if(groupCreated == null){
                 String message =  "Name already used!";
