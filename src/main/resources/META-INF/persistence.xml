@@ -8,8 +8,9 @@
     <persistence-unit name="umsdb-pu" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-        <class>com.sumerge.program.entities.Group</class>
         <class>com.sumerge.program.entities.User</class>
+        <class>com.sumerge.program.entities.Group</class>
+        <class>com.sumerge.program.entities.Audit</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql"/>
