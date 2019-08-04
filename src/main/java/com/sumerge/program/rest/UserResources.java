@@ -39,7 +39,16 @@ public class UserResources {
             LOGGER.debug("getAllUsers: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             List<User> users;
             if(authenticated_user.getAdmin()){
                 users = userManager.readAllUsersAdmin();
@@ -80,7 +89,16 @@ public class UserResources {
             LOGGER.debug("getUser: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 String message =  "You do not have an administrator authorization!";
                 throw new WebApplicationException(
@@ -123,7 +141,16 @@ public class UserResources {
             LOGGER.debug("postUser: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 String message =  "You do not have an administrator authorization!";
                 throw new WebApplicationException(
@@ -205,7 +232,16 @@ public class UserResources {
             }
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(authenticated_user.getUserId().intValue() !=  id.intValue()){
                 String message =  "You are authorized to edit your own information only!";
                 throw new WebApplicationException(
@@ -294,7 +330,16 @@ public class UserResources {
             }
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 throw new WebApplicationException(
                         Response.status(Response.Status.FORBIDDEN)
@@ -353,7 +398,16 @@ public class UserResources {
             }
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(authenticated_user.getUserId().intValue() !=  id.intValue()){
                 throw new WebApplicationException(
                         Response.status(Response.Status.FORBIDDEN)
@@ -395,7 +449,16 @@ public class UserResources {
             LOGGER.debug("putUserGroups: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 throw new WebApplicationException(
                         Response.status(Response.Status.FORBIDDEN)
@@ -444,7 +507,16 @@ public class UserResources {
             LOGGER.debug("deleteUserGroups: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 throw new WebApplicationException(
                         Response.status(Response.Status.FORBIDDEN)
