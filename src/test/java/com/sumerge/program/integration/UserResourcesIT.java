@@ -10,9 +10,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-public class UserResourcesTest {
+public class UserResourcesIT {
 
-    //@Test
+    @Test
     public void testGetAllUsers() {
         Client client= ClientBuilder.newClient();
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("ahmedhamdi96@live.com", "password");
