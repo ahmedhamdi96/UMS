@@ -114,7 +114,7 @@ public class UserResourcesIT {
         System.out.println(response.getStatus()+", "+response.getStatusInfo());
         // ----- TEST 2 -----
         System.out.println("> Getting all users w/ normal auth:");
-        httpAuthenticationFeature = HttpAuthenticationFeature.basic("user1@live.com", "password");
+        httpAuthenticationFeature = HttpAuthenticationFeature.basic("normal1@live.com", "password");
         response = client.target("http://localhost:8880/app/users")
                 .register(httpAuthenticationFeature).register(JacksonJsonProvider.class)
                 .request(MediaType.APPLICATION_JSON)
