@@ -41,7 +41,16 @@ public class GroupResources {
             LOGGER.debug("getAllGroups: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             List<Group> groups;
             if(authenticated_user.getAdmin()){
                 groups = groupManager.readAllGroupsAdmin();
@@ -82,7 +91,16 @@ public class GroupResources {
             LOGGER.debug("getGroup: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 String message =  "You do not have an administrator authorization!";
                 throw new WebApplicationException(
@@ -126,7 +144,16 @@ public class GroupResources {
             LOGGER.debug("postGroup: ENTER");
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 String message =  "You do not have an administrator authorization!";
                 throw new WebApplicationException(
@@ -203,7 +230,16 @@ public class GroupResources {
             }
 
             String email = httpRequest.getRemoteUser();
+            if(email == null){
+                String message =  "You are unauthorized!";
+                throw new WebApplicationException(
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity(message)
+                                .build()
+                );
+            }
             User authenticated_user = userManager.readUserByEmail(email);
+
             if(!authenticated_user.getAdmin()){
                 throw new WebApplicationException(
                         Response.status(Response.Status.FORBIDDEN)
