@@ -37,7 +37,7 @@ All Exceptions are handled and the system has integration tests to test the rest
 
 * Maven: project build
 * JAX-RS: web app and RESTful services
-* JASS: authentication and authorization
+* JAAS: authentication and authorization
 * JPA: database management (MySQL)
 * JTA: transactions
 * Log4j: logging
